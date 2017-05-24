@@ -11,8 +11,9 @@ public class test extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
-    @Override
+    // https://openclassrooms.com/courses/les-applications-web-avec-javafx/presentation-de-l-interface-graphique-en-javafx
+    @SuppressWarnings("restriction")
+	@Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Hello World!");
         Button btn = new Button();
