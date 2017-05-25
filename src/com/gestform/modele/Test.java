@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.shape.*;
+import com.gestform.controleur.*;
 
 public class Test extends Application {
 
@@ -16,7 +17,7 @@ public class Test extends Application {
         Application.launch(Test.class, args);
     }
     
-    @Override
+	@Override
     public void start(Stage primaryStage) {
         Group root = new Group();
         Scene scene = new Scene(root, 800, 600, Color.LIGHTBLUE);
@@ -41,11 +42,9 @@ public class Test extends Application {
         rectangle.setArcHeight(30);
         rectangle.setArcWidth(30);
         
-        rectangle.setAccessibleText("Bonjour");
-        rectangle.isResizable();
-        
+        // Retenez bien la fonction groupe.getChildren().add(objet), c'est grâce à elle que l'on peut ajouter un nœud graphique à un groupe quelconque. Nous l'utiliseront très souvent
         root.getChildren().add(cercle);
-        root.getChildren().add(rectangle);//On ajoute le rectangle aprÃ¨s le cercle
+        root.getChildren().add(rectangle);//On ajoute le rectangle après le cercle
         primaryStage.show();
     }
 
