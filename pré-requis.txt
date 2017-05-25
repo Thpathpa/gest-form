@@ -18,6 +18,7 @@ il faut utiliser le dernier SDK et non pas JRE si je veux build
 les builds se déploient dans /target/
 
 https://openclassrooms.com/courses/les-applications-web-avec-javafx/la-scene-graphique-de-javafx
+https://openclassrooms.com/courses/apprenez-a-programmer-en-java/fouiller-dans-sa-base-de-donnees
 
 
 // https://www.google.fr/search?q=api+javafx&oq=api+javafx&aqs=chrome..69i57.2575j0j1&sourceid=chrome&ie=UTF-8#q=javafx+api+stage
