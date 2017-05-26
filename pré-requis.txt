@@ -1,4 +1,4 @@
-mettre à jour java
+mettre Ã  jour java
 rajouter les variable d'environnement dans windows
 pour JAVA_HOME C:\Program Files\Java\jdk1.8.0_121
 et pour maven dans le "Path" C:\Program Files (x86)\apache-maven-3.5.0\bin
@@ -6,20 +6,38 @@ mvm --version
 
 j'utilise javaFX notament pour l'interface graphique.
 
-recupéré les fichiers
+recupÃ©rÃ© les fichiers
 // mariadb-java-client-2.0.1.jar
 apache-maven-3.5.0-bin.zip  il faut l'extraire dans C:\Program Files (x86)\
 --> on inclus mariadb via maven, on build aussi l'application via maven
 
-// https://mvnrepository.com/ pour intégrer d'éventuel plugins pour maven
+// https://mvnrepository.com/ pour intÃ©grer d'Ã©ventuel plugins pour maven
 
 il faut utiliser le dernier SDK et non pas JRE si je veux build
 
-les builds se déploient dans /target/
+les builds se dÃ©ploient dans /target/
 
 https://openclassrooms.com/courses/les-applications-web-avec-javafx/la-scene-graphique-de-javafx
 https://openclassrooms.com/courses/apprenez-a-programmer-en-java/fouiller-dans-sa-base-de-donnees
+https://java.developpez.com/faq/javafx/?page=Application
 
 
 // https://www.google.fr/search?q=api+javafx&oq=api+javafx&aqs=chrome..69i57.2575j0j1&sourceid=chrome&ie=UTF-8#q=javafx+api+stage
 // https://docs.oracle.com/javase/8/javafx/api/javafx/scene/shape/Circle.html
+
+
+Ajouter ces plugins:
+  Swing Designer	1.9.0	org.eclipse.wb.swing.feature.feature.group	Eclipse WindowBuilder
+  Swing Designer Documentation	1.9.0	org.eclipse.wb.swing.doc.user.feature.feature.group	Eclipse WindowBuilder
+  SWT Designer	1.9.0	org.eclipse.wb.rcp.feature.feature.group	Eclipse WindowBuilder
+  SWT Designer Core	1.9.0	org.eclipse.wb.swt.feature.feature.group	Eclipse WindowBuilder
+  SWT Designer Documentation	1.9.0	org.eclipse.wb.rcp.doc.user.feature.feature.group	Eclipse WindowBuilder
+  SWT Designer SWT_AWT Support	1.9.0	org.eclipse.wb.rcp.SWT_AWT_support.feature.group	Eclipse WindowBuilder
+  SWT Designer XWT Support (requires Eclipse WTP/WST)	1.9.0	org.eclipse.wb.xwt.feature.feature.group	Eclipse WindowBuilder
+  SWT Tools	3.105.3.v20161230-1118	org.eclipse.swt.tools.feature.feature.group	Eclipse.org
+  WindowBuilder Core	1.9.0	org.eclipse.wb.core.feature.feature.group	Eclipse WindowBuilder
+  WindowBuilder Core Documentation	1.9.0	org.eclipse.wb.doc.user.feature.feature.group	Eclipse WindowBuilder
+  WindowBuilder Core UI	1.9.0	org.eclipse.wb.core.ui.feature.feature.group	Eclipse WindowBuilder
+  WindowBuilder GroupLayout Support	1.9.0	org.eclipse.wb.layout.group.feature.feature.group	Eclipse WindowBuilder
+  WindowBuilder Java Core	1.9.0	org.eclipse.wb.core.java.feature.feature.group	Eclipse WindowBuilder
+  WindowBuilder XML Core (requires Eclipse WTP/WST)	1.9.0	org.eclipse.wb.core.xml.feature.feature.group	Eclipse WindowBuilder

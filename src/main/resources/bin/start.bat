@@ -1,1 +1,1 @@
-java -classpath ../lib/* com.gestform.modele.Test
+java -classpath ../lib/* main.resources.Main
