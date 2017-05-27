@@ -2,15 +2,20 @@ package com.gestform.controleur;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
 
 
 
 public class MyDBConnect {
 	
+    private Connection myConnection;
+    Statement stmt;
+    ResultSet rs;
+    
     /** Creates a new instance of MyDBConnection */
     public MyDBConnect() {
-
+    	init();
     }
 	
 	public void init() { 
@@ -24,12 +29,52 @@ public class MyDBConnect {
          Connection conn = DriverManager.getConnection(url, user, password);
          //Création d'un objet Statement
          Statement state = conn.createStatement();
-    }
+    	}
 
     catch (Exception e) {
     	System.out.println("Problème de connexion à la base de données");
         e.printStackTrace();
-      }
-}
+      	}
+	}
+	
+    public Connection getMyConnection(){
+        return myConnection;
+    }
+    
+    public void close(ResultSet rs){
+        if(rs !=null){
+            try{
+               rs.close();
+            }
+            catch(Exception e){
+            	System.out.println("Problème de fermeture du ResultSet");
+            }
+        }
+    }
+    
+     public void close(java.sql.Statement stmt){
+        
+        if(stmt !=null){
+            try{
+               stmt.close();
+            }
+            catch(Exception e){
+            	System.out.println("Problème de fermeture du Statement");
+            }
+        }
+    }
+     
+  public void destroy(){
+  
+    if(myConnection !=null){
+    
+         try{
+               myConnection.close();
+            }
+            catch(Exception e){
+            System.out.println("Problème de déconnexion à la base de données");
+            }
+    }
+  }
 }
 
