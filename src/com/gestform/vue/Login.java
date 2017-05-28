@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
-import com.gestform.controleur.MyDBConnect;
+import main.resources.MyDBConnect;
 
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
@@ -20,6 +20,7 @@ import java.security.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
@@ -80,7 +81,7 @@ public class Login {
 		        else
 		                hashString.append(hex.substring(hex.length() - 2));
 		}
-		return hashString.toString();
+		return hashString.toString(); // Retourne le mot de passe en format md5
 	}
 	
 	/**
@@ -88,86 +89,67 @@ public class Login {
 	 * 
 	 */
 	private void connection() {
-		PreparedStatement St;
+		
+		// Récupération des paramètres saisis par l'utilisateur
         String email = emailField.getText();
         String password = md5(passwordField.getText());
+        
         String sql;
         ResultSet Rs;
+        PreparedStatement St;
         
-        String idLicence = null;
-        String idOrganisateur = null;
-
        try { 
-           
           MyDBConnect mdbc = new MyDBConnect();
           mdbc.init();
           Connection  cnx = mdbc.getMyConnection();
                 // on verifie si la requête existe
-                    sql = "SELECT idLicence FROM Adherent WHERE email=? AND password =?";
+                    sql = "SELECT idLicence FROM adherent WHERE email=? AND password =?";
+                    // Création de l'objet gérant les requêtes préparées
                     St = (PreparedStatement) cnx.prepareStatement(sql);
-                    St.setString(1, email);
-                    St.setString(2, password);
-                    Rs = St.executeQuery();
-                    /* Mon code
-                    while(Rs.next()) {
-	                   idLicence=Rs.getString("idLicence"); 
-                    }
-                    // Si c'est bon
-                    if(idLicence != null) {
-                    	JOptionPane.showMessageDialog(frame, "Adherent");
-                    }
-                    else {
-                    	
-                    }
-                    */
-                if   (!Rs.next()) {
-                // s'il n'existe pas on execute la deuxième requête
-                    sql = "SELECT idOrganisateur FROM Organisateur WHERE email=? AND password =?";
-                    St = (PreparedStatement) cnx.prepareStatement(sql);
-                    St.setString(1, email);
-                    St.setString(2, password);
-                    Rs = St.executeQuery();
-                            //si deux requêtes sont echoué c'est que l'utilisateur c'est trompé
-                            if   (!Rs.next()) {
-                            	JOptionPane.showMessageDialog(frame, "Adresse e-mail ou mot de passe incorrect");
-
+                    // Remplissage des paramètres de la requête grâce aux méthodes
+                    // setXXX() mises à disposition par l'objet PreparedStatement.
+        			St.setString(1, email);
+        			St.setString(2, password);
+        			Rs = St.executeQuery();
+	        		// s'il n'existe pas on execute la deuxième requête
+	                if (!Rs.next()) {
+	                    sql = "SELECT idOrganisateur FROM organisateur WHERE email=? AND password =?";
+	                    St = (PreparedStatement) cnx.prepareStatement(sql);
+	                    St.setString(1, email);
+	                    St.setString(2, password);
+	                    Rs = St.executeQuery();
+	                    //si deux requêtes sont echoué c'est que l'utilisateur c'est trompé
+                        if (!Rs.next()) {
+                            JOptionPane.showMessageDialog(frame, "Adresse e-mail ou mot de passe incorrect");
                             }
-                            // si nous avons la reponse pour deuxieme requette
-                            else {
-                            	JOptionPane.showMessageDialog(frame, "Organisateur");
-                            	/*
-                                //on met l'identifiant d'utilisateur dans la variable
-                                GestForm.id=Rs.getString(1);
-                                // et on affecte la valeur true à la variable org de GestForm
-                                GestForm.org=true;
-		                         // fermer la frame courante       
-		                       	this.dispose();
-		                        // nouvelle fenetre GestForm s'ouvre
-		                       GestForm.FF = new GestForm();
-		                       GestForm.FF.setVisible(true);
-		                       */
+                            // si nous avons la reponse pour la deuxième requête on se connecte au panel Organisateur
+                        else {
+                        	//JOptionPane.showMessageDialog(frame, "Organisateur");
+                            // on ajoute son identifiant dans la variable     
+                            Organisateur.idOrganisateur=Rs.getString(1);
+                            // on ferme la frame courante
+                            frame.dispose();
+                            // on ouvre la fenêtre de la Class Organisateur
+                            String[] args = null;
+                    		Organisateur.main(args);
                             }  
                 }
-                // autrement c'est l'utilisateur 
+                // autrement c'est la connexion au panel Adherent
                  else {
-                	 JOptionPane.showMessageDialog(frame, "Adherent");
-                	 /*
+                	 //JOptionPane.showMessageDialog(frame, "Adherent");              	 
                     // on ajoute son identifiant dans la variable     
-                    GestForm.id=Rs.getString(1);
-                    // et on affecte la valeur false à la variable org
-                    GestForm.org=false;
-                    // fermer la frame courante
-                    this.dispose();
-                    //on ouvre la nouvel fenetre de Class userJFrame
-                    GestForm.UF = new userJFrame();
-                    GestForm.UF.setVisible(true);
-                    */
+                    Adherent.idLicence=Rs.getString(1);
+                    // on ferme la frame courante
+                    frame.dispose();
+                    // on ouvre la fenêtre de la Class Adherent
+                    String[] args = null;
+            		Adherent.main(args); 
                 }  
 
                     }
-       
-                    catch (Exception e) {
-                        JOptionPane.showMessageDialog(frame, "Adresse e-mail ou mot de passe incorrect.");
+       				// Sinon problème dans la requête
+                    catch (SQLException e) {
+                        JOptionPane.showMessageDialog(frame, "Probleme de requête");
                     } 
 }
 	/**
@@ -199,6 +181,11 @@ public class Login {
 		frame.getContentPane().add(emailLabel);
 		
 		emailField = new JTextField();
+		emailField.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent arg0) {
+				connection();
+			}
+		});
 		emailField.setBounds(42, 193, 187, 29);
 		frame.getContentPane().add(emailField);
 		emailField.setColumns(10);
@@ -209,22 +196,20 @@ public class Login {
 		frame.getContentPane().add(passwordLabel);
 		
 		passwordField = new JPasswordField();
+		passwordField.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent arg0) {
+				connection();
+			}
+		});
 		passwordField.setBounds(42, 267, 187, 29);
 		frame.getContentPane().add(passwordField);
 		
 		JButton connectionButton = new JButton("Connexion");
 		connectionButton.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent arg0) {
-				//this.connexion(arg0);
 				connection();
 			}
 		});
-		/*
-		connectionButton.addActionListener(this);
-		public void actionPerformed(ActionEvent arg0) {
-			this.connection();
-		}
-		*/
 		connectionButton.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		connectionButton.setBounds(56, 315, 148, 31);
 		frame.getContentPane().add(connectionButton);

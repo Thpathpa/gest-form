@@ -1,4 +1,4 @@
-package com.gestform.controleur;
+package main.resources;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -22,13 +22,11 @@ public class MyDBConnect {
 	try {
         Class.forName("org.mariadb.jdbc.Driver");
             
-         String url = "jdbc:mariadb://vps399745.ovh.net:3306/gest-form";
+        String url = "jdbc:mariadb://vps399745.ovh.net:3306/gest-form";
          String user = "root";
          String password = "Btssio";
             
-         Connection conn = DriverManager.getConnection(url, user, password);
-         //Création d'un objet Statement
-         Statement state = conn.createStatement();
+         myConnection = DriverManager.getConnection(url, user, password);
     	}
 
     catch (Exception e) {
