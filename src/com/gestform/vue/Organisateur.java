@@ -1,6 +1,10 @@
 package com.gestform.vue;
 
 import java.awt.EventQueue;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
@@ -17,23 +21,31 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-public class Organisateur {
+import main.resources.MyDBConnect;
 
+public class Organisateur {
+// INSERT INTO `session`(`idSession`, `dateDebut`, `dateFin`, `ORGANISATEUR_idOrganisateur`, `FORMATION_idFormation`) VALUES (5,'2017-04-14 16:00:00','2017-04-14 18:00:00',1,1)
 	private JFrame frmOrganisateur;
-	
-	public static String idOrganisateur;
 	private JTextField heureDebutJTextField;
 	private JTextField heureFinJTextField;
-	private JTable table;
+	private JTable formationsJTable;
+	
+	public static String idOrganisateur;
+	
+	MyDBConnect mdbc;
+	Statement stmt; 
+	ResultSet rs; 
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void main() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					Organisateur window = new Organisateur();
+					// On lui donne une taille à notre fenêtre
+					window.frmOrganisateur.setSize(1000, 800);
 					window.frmOrganisateur.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -46,9 +58,32 @@ public class Organisateur {
 	 * Create the application.
 	 */
 	public Organisateur() {
-		initialize();
+        mdbc=new MyDBConnect();
+        mdbc.init();
+        Connection conn=mdbc.getMyConnection();
+        stmt= conn.createStatement(); 
+
+        initialize();
+        remplir_jCBFormations();
 	}
 
+    public ResultSet getResultFromDISPO() {
+        ResultSet rs=null;
+        
+        try{
+        rs=stmt.executeQuery(
+        "SELECT `FORMATION`.`Motif`,`DateDebut`,`FORMATION`.`DUREE`,`NBMAX`,`NBMIN`,`VALID`,`ORGANISATEUR`.`Nom` FROM veyre_ppe2.SESSION, veyre_ppe2.ORGANISATEUR, veyre_ppe2.FORMATION WHERE `SESSION`.`ORGANISATEUR_idOrganisateur`=`ORGANISATEUR`.`idOrganisateur` and `SESSION`.`FORMATION_idFormation`=`FORMATION`.`idFORMATION` and `SESSION`.`ORGANISATEUR_idOrganisateur`="+GestForm.id+" ORDER BY  `DateDebut`"
+        );
+        //System.out.println(rs);
+        
+        }
+        catch(SQLException e){
+        	e.printStackTrace();
+			System.out.println("Problème de requête des formations");
+        }
+        
+        return rs;    
+        }
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -98,6 +133,7 @@ public class Organisateur {
 		JLabel anneeFinJLabel = new JLabel("Année :");
 		
 		JComboBox anneeFinJComboBox = new JComboBox();
+		anneeFinJComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2017", "2018", "2019" }));
 		
 		JLabel heureFinJLabel = new JLabel("Heure de fin :");
 		
@@ -227,8 +263,8 @@ public class Organisateur {
 					.addContainerGap())
 		);
 		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
+		formationsJTable = new JTable();
+		formationsJTable.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
@@ -242,7 +278,7 @@ public class Organisateur {
 				return columnTypes[columnIndex];
 			}
 		});
-		scrollPane.setColumnHeaderView(table);
+		scrollPane.setColumnHeaderView(formationsJTable);
 		frmOrganisateur.getContentPane().setLayout(groupLayout);
 	}
 }

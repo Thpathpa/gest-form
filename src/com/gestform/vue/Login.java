@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import main.resources.MyDBConnect;
 
@@ -130,8 +131,7 @@ public class Login {
                             // on ferme la frame courante
                             frame.dispose();
                             // on ouvre la fenêtre de la Class Organisateur
-                            String[] args = null;
-                    		Organisateur.main(args);
+                    		Organisateur.main();
                             }  
                 }
                 // autrement c'est la connexion au panel Adherent
@@ -142,8 +142,7 @@ public class Login {
                     // on ferme la frame courante
                     frame.dispose();
                     // on ouvre la fenêtre de la Class Adherent
-                    String[] args = null;
-            		Adherent.main(args); 
+            		Adherent.main(); 
                 }  
 
                     }
@@ -207,6 +206,18 @@ public class Login {
 		JButton connectionButton = new JButton("Connexion");
 		connectionButton.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent arg0) {
+				//frame.getContentPane().removeAll();
+				//frame.dispose();
+				//frame.setVisible(false);
+				//frame.setVisible(true);
+				//initialize();
+				/*
+				frame.getContentPane().validate();
+				frame.getContentPane().repaint();
+				//frame.getContentPane().initialize();*/
+				//SwingUtilities.updateComponentTreeUI(frame);
+				//initialize();
+
 				connection();
 			}
 		});
