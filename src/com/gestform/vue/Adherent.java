@@ -54,7 +54,7 @@ public class Adherent {
 			public void run() {
 				try {
 					Adherent window = new Adherent();
-					// On lui donne une taille à notre fenêtre
+					// On donne une taille à notre fenêtre
 					window.frmAdherent.setSize(1000, 800);
 					window.frmAdherent.setVisible(true);
 				}
@@ -200,6 +200,8 @@ public class Adherent {
 		//getInscriptionFormations();
 		//frame.setVisible(false);
 		//frmAdherent.setVisible(false);
+		//frmAdherent.revalidate();
+		//frmAdherent.repaint();
 		initialize();
 		frmAdherent.setVisible(true);
         
@@ -379,7 +381,6 @@ public class Adherent {
 		toutesFormationsScrollPane.setViewportView(toutesFormationsjtable);
 		
 		inscriptionsjTable = new JTable();
-		inscriptionsjTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		inscriptionsjTable.setModel(new TableauModel(getInscriptionFormations()));
 		/*inscriptionsjTable.setModel(new DefaultTableModel(
 			new Object[][] {

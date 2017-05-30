@@ -217,7 +217,9 @@ public class Login {
 				//frame.getContentPane().initialize();*/
 				//SwingUtilities.updateComponentTreeUI(frame);
 				//initialize();
-
+				//frame.removeAll();
+				//frame.revalidate();
+				//frame.repaint();
 				connection();
 			}
 		});
