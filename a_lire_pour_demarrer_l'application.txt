@@ -1,0 +1,2 @@
+﻿Il faut exécuter le start.bat pour démarrer l'application
+situer dans : gest-form\target\gest-form-0.0.1-SNAPSHOT\bin
