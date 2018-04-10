@@ -22,8 +22,8 @@ public class MyDBConnect {
 	try {
         Class.forName("org.mariadb.jdbc.Driver");
             
-        String url = "jdbc:mariadb://vps399745.ovh.net:3306/gest-form";
-         String user = "root";
+        String url = "jdbc:mariadb://btsthpa.ddns.net:3306/gest-form";
+         String user = "sio";
          String password = "Btssio";
             
          myConnection = DriverManager.getConnection(url, user, password);
