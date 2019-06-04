@@ -26,6 +26,8 @@ import javax.swing.table.DefaultTableModel;
 import main.resources.MyDBConnect;
 import main.resources.TableauModel;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Organisateur {
 	private JFrame frmOrganisateur;
@@ -266,6 +268,15 @@ public class Organisateur {
                 ajouterSession();
             }
         });
+		
+		// New Deconnexion
+		JButton btnDeconnexion = new JButton("Se déconnecter");
+		btnDeconnexion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frmOrganisateur.dispose(); // ferme la fenêtre actuel
+				Login.main(); // ouvre la fenêtre login
+			}
+		});
 		GroupLayout groupLayout = new GroupLayout(frmOrganisateur.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -307,8 +318,7 @@ public class Organisateur {
 											.addGap(18)
 											.addComponent(moisFinJComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(anneeFinJComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-											.addPreferredGap(ComponentPlacement.RELATED))
+											.addComponent(anneeFinJComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 										.addGroup(groupLayout.createSequentialGroup()
 											.addComponent(jourFinJLabel)
 											.addGap(18)
@@ -317,38 +327,42 @@ public class Organisateur {
 											.addComponent(anneeFinJLabel))))
 								.addGroup(groupLayout.createSequentialGroup()
 									.addGap(66)
-									.addComponent(dateFinJLabel))))
+									.addComponent(dateFinJLabel)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(btnDeconnexion))))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addContainerGap()
 							.addComponent(vosSessionsJLabel))
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-							.addGroup(groupLayout.createSequentialGroup()
-								.addGap(256)
-								.addComponent(ajouterSessionButton)
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(JSeparator, GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE))
-							.addGroup(groupLayout.createSequentialGroup()
-								.addGap(60)
-								.addComponent(heureDebutJLabel)
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(heureDebutJTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addGap(44)
-								.addComponent(heureFinJLabel)
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(heureFinJTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(256)
+							.addComponent(ajouterSessionButton)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(JSeparator, GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(60)
+							.addComponent(heureDebutJLabel)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(heureDebutJTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(44)
+							.addComponent(heureFinJLabel)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(heureFinJTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addContainerGap()
-							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 926, Short.MAX_VALUE)))
+							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 727, Short.MAX_VALUE)))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(sessionJLabel)
-						.addComponent(dateFinJLabel)
-						.addComponent(dateDebutJLabel))
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addContainerGap()
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(sessionJLabel)
+								.addComponent(dateFinJLabel)
+								.addComponent(dateDebutJLabel)))
+						.addComponent(btnDeconnexion))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(formationsJLabel)

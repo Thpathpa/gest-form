@@ -12,6 +12,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.event.TableModelListener;
 
 import java.awt.Window.Type;
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,6 +31,8 @@ import main.resources.TableauModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Adherent {
 
@@ -183,17 +186,31 @@ public class Adherent {
 			}
 	// on inscrit l'adherent à la session selectionnée
 	private void inscriptionAction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ValidBActionPerformed
+		
+		String countInscrit="SELECT Count(adherent_IdLicence) as nb "
+		+ "FROM adherent_has_session "
+		+ "INNER JOIN session "
+		+ "ON session.idSession = adherent_has_session.session_idsession " 
+		+ "WHERE adherent_has_session.adherent_IdLicence = " + idLicence + " "
+		+ "AND YEAR(session.dateDebut) = YEAR(NOW()) " 
+		+ "AND inscription = 1 ;";
+		try {
+            ResultSet result=stmt.executeQuery(countInscrit); 
+            result.next(); // Récupère le premier résultat
+            int count = result.getInt("nb"); // Le count
+            
+            boolean isInscrit = count < 5;
+            
+            String[] lis;
+            String liststring = (String)inscriptionJComboBox.getSelectedItem();
+            lis=liststring.split("#");
+            String insertStr="INSERT INTO `adherent_has_session`(`adherent_idLicence`, `session_idsession`, `inscription`, `dateInscription` ) VALUES (" + idLicence + ","+lis[1]+"," + isInscrit + ", NOW());";
 
-        String[] lis;
-        String liststring = (String)inscriptionJComboBox.getSelectedItem();
-        lis=liststring.split("#");
-        //System.out.println(lis[1]);
-        String insertStr="INSERT INTO `adherent_has_session`(`adherent_idLicence`, `session_idsession`) VALUES (" + idLicence + ","+lis[1]+");";
-        try {
-            int done=stmt.executeUpdate(insertStr);
+            int done=stmt.executeUpdate(insertStr);           
         } catch (SQLException ex) {
             Logger.getLogger(Adherent.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         //SwingUtilities.updateComponentTreeUI(frmAdherent);
         //getContentPane.removeAll();
 		frmAdherent.dispose();
@@ -286,6 +303,20 @@ public class Adherent {
 		JLabel desinscriptionLabel = new JLabel("Choisissez la formation à retirer");
 		
 		desinscriptionJComboBox = new JComboBox();
+		
+		// NEW Deconnexion
+		JButton btnDeconnexion = new JButton("Se déconnecter");
+		btnDeconnexion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// on ferme la frame courante
+				
+				frmAdherent.dispose();
+                // On ouvre la classe Login
+                //Login login = null;
+                //login.loginInitialize();
+                Login.main();
+			}
+		});
 		GroupLayout groupLayout = new GroupLayout(frmAdherent.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -295,18 +326,18 @@ public class Adherent {
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(formationsDisponibleLabel)
 							.addContainerGap())
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-							.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-								.addComponent(toutesFormationsScrollPane, GroupLayout.DEFAULT_SIZE, 654, Short.MAX_VALUE)
+						.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+							.addGroup(groupLayout.createSequentialGroup()
+								.addComponent(toutesFormationsScrollPane, GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE)
 								.addContainerGap())
-							.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-								.addComponent(inscritScrollPane, GroupLayout.DEFAULT_SIZE, 654, Short.MAX_VALUE)
+							.addGroup(groupLayout.createSequentialGroup()
+								.addComponent(inscritScrollPane, GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE)
 								.addContainerGap())
-							.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createSequentialGroup()
 								.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-									.addComponent(formationIncriptionJLabel, GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
+									.addComponent(formationIncriptionJLabel, GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)
 									.addGroup(groupLayout.createSequentialGroup()
-										.addComponent(mesFormationsJLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(mesFormationsJLabel, GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
 										.addGap(114)))
 								.addGap(197))
 							.addGroup(groupLayout.createSequentialGroup()
@@ -319,11 +350,17 @@ public class Adherent {
 									.addComponent(inscriptionButton)
 									.addComponent(desinscriptionButton))
 								.addGap(119)))))
+				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+					.addContainerGap(490, Short.MAX_VALUE)
+					.addComponent(btnDeconnexion)
+					.addGap(112))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(56)
+					.addGap(17)
+					.addComponent(btnDeconnexion)
+					.addGap(8)
 					.addComponent(formationIncriptionJLabel)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
@@ -335,7 +372,7 @@ public class Adherent {
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(desinscriptionJComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(desinscriptionButton))
-					.addPreferredGap(ComponentPlacement.RELATED, 129, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
 					.addComponent(mesFormationsJLabel)
 					.addGap(1)
 					.addComponent(inscritScrollPane, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)

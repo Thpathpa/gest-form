@@ -9,6 +9,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import main.resources.MyDBConnect;
+import test.Test;
 
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
@@ -33,11 +34,11 @@ public class Login {
 	private JFrame frame;
 	private JTextField emailField;
 	private JPasswordField passwordField;
-
+	
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void main() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -49,13 +50,13 @@ public class Login {
 			}
 		});
 	}
-
-	/**
+	/*
 	 * Create the application.
 	 */
 	public Login() {
 		initialize();
 	}
+	
 	// Fonction pour tranformer le password saisie
 	private static String md5(String password) {
 		byte[] uniqueKey = password.getBytes();
@@ -99,7 +100,12 @@ public class Login {
         ResultSet Rs;
         PreparedStatement St;
         
-       try { 
+       // On veux être sur que la personne saisie bien quelque chose dans les champs email ou mot de passe
+		//if (email != "") // || password != "d41d8cd98f00b204e9800998ecf8427e")
+        if (email.isEmpty() != true && passwordField.getText().isEmpty() != true) // || password != "d41d8cd98f00b204e9800998ecf8427e")
+		//if (email != null || password != null)
+		{	
+		try {
           MyDBConnect mdbc = new MyDBConnect();
           mdbc.init();
           Connection  cnx = mdbc.getMyConnection();
@@ -149,7 +155,12 @@ public class Login {
        				// Sinon problème dans la requête
                     catch (SQLException e) {
                         JOptionPane.showMessageDialog(frame, "Probleme de requête");
-                    } 
+                    }
+		}
+		else
+		{
+			JOptionPane.showMessageDialog(frame, "Veuillez bien remplir les deux champs.");
+		}
 }
 	/**
 	 * Initialize the contents of the frame.
@@ -220,11 +231,21 @@ public class Login {
 				//frame.removeAll();
 				//frame.revalidate();
 				//frame.repaint();
-				connection();
+					connection();
 			}
 		});
 		connectionButton.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		connectionButton.setBounds(56, 315, 148, 31);
 		frame.getContentPane().add(connectionButton);
+		
+		JButton btnTest = new JButton("Test");
+		btnTest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				Test.main();
+			}
+		});
+		btnTest.setBounds(56, 390, 131, 31);
+		frame.getContentPane().add(btnTest);
 	}
 }

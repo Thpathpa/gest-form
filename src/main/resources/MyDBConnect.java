@@ -22,7 +22,7 @@ public class MyDBConnect {
 	try {
         Class.forName("org.mariadb.jdbc.Driver");
             
-        String url = "jdbc:mariadb://btsthpa.ddns.net:3306/gest-form";
+        String url = "jdbc:mariadb://btsthpa.ddns.net:3306/gest-form-test";
          String user = "sio";
          String password = "Btssio";
             
