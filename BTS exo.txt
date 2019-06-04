@@ -1,0 +1,51 @@
+Limiter le nombre d'inscription à 5 par année, ajouter un champ pour la dateInscription (date local)
+Un autre champs si oui ou non les inscriptions sont valide
+La personne ne doit pas pouvoir s'inscrire plus de 5 fois (par an) mais sa doit laisser une trace
+dans la DB pour des statistiques
+
+
+Requête SQL
+Création de la nouvelle colonne inscription dans adherent_has_session
+
+ALTER TABLE adherent_has_session
+ADD inscription tinyint(1), dateInscription DATETIME;
+
+ALTER TABLE adherent_has_session
+ADD inscription boolean
+
+----------------------------------------
+
+Mise à jour de la table adherent_has_session avec la validation de toutes les anciennes inscriptions
+
+UPDATE adherent_has_session
+SET inscription = 1;
+
+UPDATE adherent_has_session
+SET inscription = true
+
+---------------------------------------
+
+Voir si l'adherent c'est déjà inscrit plus de 5 fois
+
+SELECT Count(adherent_IdLicence) as nb
+FROM adherent_has_session
+INNER JOIN session
+	ON session.idSession = adherent_has_session.session_idsession
+WHERE adherent_has_session.adherent_IdLicence = idLicence
+AND YEAR(session.dateDebut) = YEAR(NOW())
+AND inscription = 1;
+
+-------------------------------------
+Classe JAVA Adherent
+ligne 188 :	private void remplirFormationsInscriptionsJCombo() throws SQLException
+
+Si L'adherent a moins de 5 inscription on l'inscrit 
+String insertStr="INSERT INTO `adherent_has_session`
+(`adherent_idLicence`, `session_idsession`, `inscription`) VALUES (" + idLicence + ","+lis[1]+ ", "1" );";
+--
+
+Sinon on l'enregistre quand même mais en inscription false
+String insertStr="INSERT INTO `adherent_has_session`
+(`adherent_idLicence`, `session_idsession`, `inscription`) VALUES (" + idLicence + ","+lis[1]+ ", "0" );";
+--
+Il faudrait modifier la requête qui affiche toutes les inscriptions qui sont validés.
