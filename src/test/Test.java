@@ -3,6 +3,8 @@ package test;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JButton;
+import java.awt.BorderLayout;
 
 public class Test {
 
@@ -39,6 +41,11 @@ public class Test {
 		frmTest.setTitle("Test");
 		frmTest.setBounds(100, 100, 657, 572);
 		frmTest.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmTest.getContentPane().setLayout(null);
+		
+		JButton btnTest = new JButton("Test");
+		btnTest.setBounds(45, 458, 131, 31);
+		frmTest.getContentPane().add(btnTest);
 	}
 
 }
