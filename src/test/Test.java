@@ -5,10 +5,14 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import java.awt.BorderLayout;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class Test {
 
 	private JFrame frmTest;
+	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -46,6 +50,19 @@ public class Test {
 		JButton btnTest = new JButton("Test");
 		btnTest.setBounds(45, 458, 131, 31);
 		frmTest.getContentPane().add(btnTest);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(45, 134, 381, 142);
+		frmTest.getContentPane().add(scrollPane);
+		
+		table = new JTable();
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"New column", "New column", "New column"
+			}
+		));
+		scrollPane.setRowHeaderView(table);
 	}
-
 }
